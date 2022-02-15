@@ -3,6 +3,7 @@ import '@nomiclabs/hardhat-ethers'
 import "@nomiclabs/hardhat-waffle";
 import '@typechain/hardhat'
 import "tsconfig-paths/register";
+import "hardhat-deploy";
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
