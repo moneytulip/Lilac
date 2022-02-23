@@ -14,6 +14,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 const config: HardhatUserConfig = {
+  networks: {
+    oasis: {
+      url: 'https://emerald.oasis.dev',
+      chainId: 42262,
+      gas: 10000000,
+    },
+    oasisTestnet: {
+      url: 'https://testnet.emerald.oasis.dev',
+      chainId: 42261,
+      gas: 10000000,
+    },
+  },
   solidity: {
     version: "0.8.9",
     settings: {

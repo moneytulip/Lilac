@@ -10,53 +10,36 @@ import {
   Signer,
   utils,
 } from "ethers";
-import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
+import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface PausableUpgradeableInterface extends utils.Interface {
-  contractName: "PausableUpgradeable";
+export interface ContextUpgradeableInterface extends utils.Interface {
+  contractName: "ContextUpgradeable";
   functions: {
     "_initialized()": FunctionFragment;
-    "paused()": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "_initialized",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "_initialized",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
 
-  events: {
-    "Paused(address)": EventFragment;
-    "Unpaused(address)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
+  events: {};
 }
 
-export type PausedEvent = TypedEvent<[string], { account: string }>;
-
-export type PausedEventFilter = TypedEventFilter<PausedEvent>;
-
-export type UnpausedEvent = TypedEvent<[string], { account: string }>;
-
-export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
-
-export interface PausableUpgradeable extends BaseContract {
-  contractName: "PausableUpgradeable";
+export interface ContextUpgradeable extends BaseContract {
+  contractName: "ContextUpgradeable";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: PausableUpgradeableInterface;
+  interface: ContextUpgradeableInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -79,37 +62,21 @@ export interface PausableUpgradeable extends BaseContract {
 
   functions: {
     _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
-    paused(overrides?: CallOverrides): Promise<[boolean]>;
   };
 
   _initialized(overrides?: CallOverrides): Promise<boolean>;
 
-  paused(overrides?: CallOverrides): Promise<boolean>;
-
   callStatic: {
     _initialized(overrides?: CallOverrides): Promise<boolean>;
-
-    paused(overrides?: CallOverrides): Promise<boolean>;
   };
 
-  filters: {
-    "Paused(address)"(account?: null): PausedEventFilter;
-    Paused(account?: null): PausedEventFilter;
-
-    "Unpaused(address)"(account?: null): UnpausedEventFilter;
-    Unpaused(account?: null): UnpausedEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
-    paused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

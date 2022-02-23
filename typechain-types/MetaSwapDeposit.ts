@@ -20,6 +20,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface MetaSwapDepositInterface extends utils.Interface {
   contractName: "MetaSwapDeposit";
   functions: {
+    "_initialized()": FunctionFragment;
     "addLiquidity(uint256[],uint256,uint256)": FunctionFragment;
     "baseSwap()": FunctionFragment;
     "baseTokens(uint256)": FunctionFragment;
@@ -39,6 +40,10 @@ export interface MetaSwapDepositInterface extends utils.Interface {
     "tokens(uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_initialized",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [BigNumberish[], BigNumberish, BigNumberish]
@@ -108,6 +113,10 @@ export interface MetaSwapDepositInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "_initialized",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
@@ -184,6 +193,8 @@ export interface MetaSwapDeposit extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
+
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -274,6 +285,8 @@ export interface MetaSwapDeposit extends BaseContract {
     tokens(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
   };
 
+  _initialized(overrides?: CallOverrides): Promise<boolean>;
+
   addLiquidity(
     amounts: BigNumberish[],
     minToMint: BigNumberish,
@@ -358,6 +371,8 @@ export interface MetaSwapDeposit extends BaseContract {
   tokens(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    _initialized(overrides?: CallOverrides): Promise<boolean>;
+
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -445,6 +460,8 @@ export interface MetaSwapDeposit extends BaseContract {
   filters: {};
 
   estimateGas: {
+    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
+
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -539,6 +556,8 @@ export interface MetaSwapDeposit extends BaseContract {
   };
 
   populateTransaction: {
+    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,

@@ -19,6 +19,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface OwnerPausableUpgradeableInterface extends utils.Interface {
   contractName: "OwnerPausableUpgradeable";
   functions: {
+    "_initialized()": FunctionFragment;
     "owner()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
@@ -27,6 +28,10 @@ export interface OwnerPausableUpgradeableInterface extends utils.Interface {
     "unpause()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_initialized",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
@@ -40,6 +45,10 @@ export interface OwnerPausableUpgradeableInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
 
+  decodeFunctionResult(
+    functionFragment: "_initialized",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
@@ -108,6 +117,8 @@ export interface OwnerPausableUpgradeable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     pause(
@@ -129,6 +140,8 @@ export interface OwnerPausableUpgradeable extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -152,6 +165,8 @@ export interface OwnerPausableUpgradeable extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    _initialized(overrides?: CallOverrides): Promise<boolean>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     pause(overrides?: CallOverrides): Promise<void>;
@@ -186,6 +201,8 @@ export interface OwnerPausableUpgradeable extends BaseContract {
   };
 
   estimateGas: {
+    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(
@@ -209,6 +226,8 @@ export interface OwnerPausableUpgradeable extends BaseContract {
   };
 
   populateTransaction: {
+    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pause(

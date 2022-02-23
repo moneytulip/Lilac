@@ -61,6 +61,19 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "_initialized",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
