@@ -27,13 +27,12 @@ contract MultiSwap {
         // saddle swap
         uint8 tokenIndexFrom,
         uint8 tokenIndexTo,
-        uint256 dx,
         uint256 minDy,
 
         // used by both
         uint256 deadline
     ) public {
-        IVault(vault).swap(
+        uint256 dx = IVault(vault).swap(
             singleSwap,
             funds,
             limit,
@@ -63,13 +62,14 @@ contract MultiSwap {
         // used by both
         uint256 deadline
     ) public {
-        swap.swap(
+        uint256 amount = swap.swap(
             tokenIndexFrom,
             tokenIndexTo,
             dx,
             minDy,
             deadline
         );
+        singleSwap.amount = amount;
         IVault(vault).swap(
             singleSwap,
             funds,
