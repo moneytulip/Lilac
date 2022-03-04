@@ -11,11 +11,9 @@ import "./pool-weighted/interfaces/IVault.sol";
  */
 contract MultiSwap {
     IVault public vault;
-    ISwap public swap;
 
-    constructor(address _vault, address _swap) {
+    constructor(address _vault) {
         vault = IVault(_vault);
-        swap = ISwap(_swap);
     }
 
     function poolToSwap(
@@ -25,6 +23,7 @@ contract MultiSwap {
         uint256 limit,
 
         // saddle swap
+        address pool,
         uint8 tokenIndexFrom,
         uint8 tokenIndexTo,
         uint256 minDy,
@@ -38,7 +37,7 @@ contract MultiSwap {
             limit,
             deadline
         );
-        swap.swap(
+        ISwap(pool).swap(
             tokenIndexFrom,
             tokenIndexTo,
             dx,
@@ -47,8 +46,54 @@ contract MultiSwap {
         );
     }
 
+    function swapPoolSwap(
+        // saddle swap1
+        address swap,
+        uint8 tokenIndexFrom,
+        uint8 tokenIndexTo,
+        uint256 dx,
+        uint256 minDy,
+
+        // weighted pool swap
+        IVault.SingleSwap memory singleSwap,
+        IVault.FundManagement memory funds,
+        uint256 limit,
+
+        // saddle swap2
+        address swap2,
+        uint8 tokenIndexFrom2,
+        uint8 tokenIndexTo2,
+        uint256 minDy2,
+
+        // used by both
+        uint256 deadline
+    ) public returns(uint256) {
+        uint256 swapDx = swapToPool(
+            swap,
+            tokenIndexFrom,
+            tokenIndexTo,
+            dx,
+            minDy,
+
+            singleSwap,
+            funds,
+            limit,
+
+            deadline
+        );
+
+         return ISwap(swap2).swap(
+            tokenIndexFrom2,
+            tokenIndexTo2,
+            swapDx,
+            minDy2,
+            deadline
+        );
+    }
+
     function swapToPool(
         // saddle swap
+        address swap,
         uint8 tokenIndexFrom,
         uint8 tokenIndexTo,
         uint256 dx,
@@ -61,8 +106,8 @@ contract MultiSwap {
 
         // used by both
         uint256 deadline
-    ) public {
-        uint256 amount = swap.swap(
+    ) public returns (uint256) {
+        uint256 amount = ISwap(swap).swap(
             tokenIndexFrom,
             tokenIndexTo,
             dx,
@@ -70,7 +115,7 @@ contract MultiSwap {
             deadline
         );
         singleSwap.amount = amount;
-        IVault(vault).swap(
+        return IVault(vault).swap(
             singleSwap,
             funds,
             limit,
