@@ -12,10 +12,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 
 import "../../math/Math.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "../../helpers/BalancerErrors.sol";
 
 // This library is used to create a data structure that represents a token's balance for a Pool. 'cash' is how many
@@ -47,7 +46,7 @@ import "../../helpers/BalancerErrors.sol";
 // Since we cannot define new types, we rely on bytes32 to represent these values instead, as it doesn't have any
 // associated arithmetic operations and therefore reduces the chance of misuse.
 library BalanceAllocation {
-    using SafeMath for uint256;
+    using Math for uint256;
 
     // The 'cash' portion of the balance is stored in the least significant 112 bits of a 256 bit word, while the
     // 'managed' part uses the following 112 bits. The most significant 32 bits are used to store the block

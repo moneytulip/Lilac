@@ -14,17 +14,17 @@
 
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../openzeppelin/IERC20.sol";
 import "./ISignaturesValidator.sol";
-import "./ITemporarilyPausable.sol";
 import "./IWETH.sol";
 
 import "./IAsset.sol";
 import "./IAuthorizer.sol";
 import "./IFlashLoanRecipient.sol";
 import "./IProtocolFeesCollector.sol";
+import "./ITemporarilyPausable.sol";
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 
 /**
  * @dev Full external interface for the Vault core contract - no external or public methods exist in the contract that

@@ -12,9 +12,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 
-import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
+import "./openzeppelin/ERC20Permit.sol";
 import "./helpers/BalancerErrors.sol";
 import "./interfaces/IVault.sol";
 
@@ -57,7 +57,7 @@ contract BalancerPoolToken is ERC20Permit {
      */
     function allowance(address owner, address spender) public view override returns (uint256) {
         if (spender == address(getVault())) {
-            return type(uint256).max;
+            return uint256(-1);
         } else {
             return super.allowance(owner, spender);
         }
@@ -72,12 +72,11 @@ contract BalancerPoolToken is ERC20Permit {
         uint256 amount
     ) public override returns (bool) {
         uint256 currentAllowance = allowance(sender, msg.sender);
-        // TODO: setup error codes
         _require(msg.sender == sender || currentAllowance >= amount, Errors.ERC20_TRANSFER_EXCEEDS_ALLOWANCE);
 
         _transfer(sender, recipient, amount);
 
-        if (msg.sender != sender && currentAllowance != type(uint256).max) {
+        if (msg.sender != sender && currentAllowance != uint256(-1)) {
             // Because of the previous require, we know that if msg.sender != sender then currentAllowance >= amount
             _approve(sender, msg.sender, currentAllowance - amount);
         }

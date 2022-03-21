@@ -12,14 +12,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
 import "../math/Math.sol";
 import "../helpers/BalancerErrors.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
+import "../openzeppelin/IERC20.sol";
+import "../openzeppelin/SafeERC20.sol";
+import "../openzeppelin/Address.sol";
 
 import "../interfaces/IWETH.sol";
 import "../interfaces/IAsset.sol";
@@ -130,7 +130,7 @@ abstract contract AssetTransfersHandler is AssetHelpers {
 
         uint256 excess = msg.value - amountUsed;
         if (excess > 0) {
-            payable(msg.sender).sendValue(excess);
+            msg.sender.sendValue(excess);
         }
     }
 

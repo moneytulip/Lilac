@@ -12,13 +12,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
 import "../helpers/InputHelpers.sol";
 import "../Authentication.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "../openzeppelin/ReentrancyGuard.sol";
+import "../openzeppelin/SafeERC20.sol";
 
 import "../interfaces/IProtocolFeesCollector.sol";
 
@@ -52,7 +52,7 @@ contract ProtocolFeesCollector is IProtocolFeesCollector, Authentication, Reentr
     constructor(IVault _vault)
         // The ProtocolFeesCollector is a singleton, so it simply uses its own address to disambiguate action
         // identifiers.
-        Authentication(bytes32(uint256(uint160(address(this)))))
+        Authentication(bytes32(uint256(address(this))))
     {
         vault = _vault;
     }

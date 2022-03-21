@@ -12,15 +12,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "../openzeppelin/ReentrancyGuard.sol";
 import "../Authentication.sol";
 import "../helpers/BalancerErrors.sol";
-import "../helpers/TemporarilyPausable.sol";
 import "../helpers/BalancerErrors.sol";
 import "../helpers/SignaturesValidator.sol";
+import "../helpers/TemporarilyPausable.sol";
 
 import "../interfaces/IVault.sol";
 import "../interfaces/IAuthorizer.sol";
@@ -75,7 +75,7 @@ abstract contract VaultAuthorization is
 
     constructor(IAuthorizer authorizer)
         // The Vault is a singleton, so it simply uses its own address to disambiguate action identifiers.
-        Authentication(bytes32(uint256(uint160(address(this)))))
+        Authentication(bytes32(uint256(address(this))))
         SignaturesValidator("Balancer V2 Vault")
     {
         _setAuthorizer(authorizer);

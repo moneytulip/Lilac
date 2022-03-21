@@ -19,16 +19,11 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface OwnableUpgradeableInterface extends utils.Interface {
   contractName: "OwnableUpgradeable";
   functions: {
-    "_initialized()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -39,10 +34,6 @@ export interface OwnableUpgradeableInterface extends utils.Interface {
     values: [string]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
@@ -96,8 +87,6 @@ export interface OwnableUpgradeable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
@@ -109,8 +98,6 @@ export interface OwnableUpgradeable extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -124,8 +111,6 @@ export interface OwnableUpgradeable extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
@@ -148,8 +133,6 @@ export interface OwnableUpgradeable extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
@@ -163,8 +146,6 @@ export interface OwnableUpgradeable extends BaseContract {
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(

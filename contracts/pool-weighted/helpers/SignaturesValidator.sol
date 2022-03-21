@@ -12,11 +12,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 
 import "./BalancerErrors.sol";
 import "../interfaces/ISignaturesValidator.sol";
-import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
+import "../openzeppelin/EIP712.sol";
 
 /**
  * @dev Utility for signing Solidity function calls.

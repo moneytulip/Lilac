@@ -12,20 +12,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./openzeppelin/ERC20.sol";
 
 import "./math/Math.sol";
 import "./math/FixedPoint.sol";
-import "./helpers/TemporarilyPausable.sol";
 import "./WordCodec.sol";
 
 import "./interfaces/IVault.sol";
 import "./interfaces/IBasePool.sol";
 
 import "./interfaces/IAssetManager.sol";
+import "./helpers/TemporarilyPausable.sol";
 
 import "./BalancerPoolToken.sol";
 import "./BasePoolAuthorization.sol";
@@ -86,7 +86,7 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         // simpler management of permissions (such as being able to manage granting the 'set fee percentage' action in
         // any Pool created by the same factory), while still making action identifiers unique among different factories
         // if the selectors match, preventing accidental errors.
-        Authentication(bytes32(uint256(uint160(address(msg.sender)))))
+        Authentication(bytes32(uint256(msg.sender)))
         BalancerPoolToken(name, symbol, vault)
         BasePoolAuthorization(owner)
         TemporarilyPausable(pauseWindowDuration, bufferPeriodDuration)

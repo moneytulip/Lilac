@@ -12,15 +12,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity 0.8.9;
+pragma solidity 0.7.6;
 pragma experimental ABIEncoderV2;
 
 import "../math/Math.sol";
 import "../helpers/BalancerErrors.sol";
 import "../helpers/InputHelpers.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "../openzeppelin/IERC20.sol";
+import "../openzeppelin/SafeERC20.sol";
+import "../openzeppelin/ReentrancyGuard.sol";
 
 import "./UserBalance.sol";
 import "./balances/BalanceAllocation.sol";
@@ -116,7 +116,7 @@ abstract contract AssetManagers is
 
         // Since 'cash' and 'managed' are stored as uint112, `amount` is guaranteed to also fit in 112 bits. It will
         // therefore always fit in a 256 bit integer.
-        cashDelta = int256(0 - amount);
+        cashDelta = int256(-amount);
         managedDelta = int256(amount);
     }
 
@@ -147,7 +147,7 @@ abstract contract AssetManagers is
         // Since 'cash' and 'managed' are stored as uint112, `amount` is guaranteed to also fit in 112 bits. It will
         // therefore always fit in a 256 bit integer.
         cashDelta = int256(amount);
-        managedDelta = int256(0 - amount);
+        managedDelta = int256(-amount);
     }
 
     /**

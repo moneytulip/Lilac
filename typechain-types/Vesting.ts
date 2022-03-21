@@ -20,7 +20,6 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface VestingInterface extends utils.Interface {
   contractName: "Vesting";
   functions: {
-    "_initialized()": FunctionFragment;
     "beneficiary()": FunctionFragment;
     "changeBeneficiary(address)": FunctionFragment;
     "cliffInSeconds()": FunctionFragment;
@@ -34,10 +33,6 @@ export interface VestingInterface extends utils.Interface {
     "vestedAmount()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "beneficiary",
     values?: undefined
@@ -74,10 +69,6 @@ export interface VestingInterface extends utils.Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "beneficiary",
     data: BytesLike
@@ -168,8 +159,6 @@ export interface Vesting extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     beneficiary(overrides?: CallOverrides): Promise<[string]>;
 
     changeBeneficiary(
@@ -204,8 +193,6 @@ export interface Vesting extends BaseContract {
 
     vestedAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   beneficiary(overrides?: CallOverrides): Promise<string>;
 
@@ -242,8 +229,6 @@ export interface Vesting extends BaseContract {
   vestedAmount(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     beneficiary(overrides?: CallOverrides): Promise<string>;
 
     changeBeneficiary(
@@ -301,8 +286,6 @@ export interface Vesting extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     beneficiary(overrides?: CallOverrides): Promise<BigNumber>;
 
     changeBeneficiary(
@@ -339,8 +322,6 @@ export interface Vesting extends BaseContract {
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     beneficiary(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     changeBeneficiary(

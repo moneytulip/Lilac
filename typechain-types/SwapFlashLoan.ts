@@ -21,7 +21,6 @@ export interface SwapFlashLoanInterface extends utils.Interface {
   contractName: "SwapFlashLoan";
   functions: {
     "MAX_BPS()": FunctionFragment;
-    "_initialized()": FunctionFragment;
     "addLiquidity(uint256[],uint256,uint256)": FunctionFragment;
     "calculateRemoveLiquidity(uint256)": FunctionFragment;
     "calculateRemoveLiquidityOneToken(uint256,uint8)": FunctionFragment;
@@ -58,10 +57,6 @@ export interface SwapFlashLoanInterface extends utils.Interface {
   };
 
   encodeFunctionData(functionFragment: "MAX_BPS", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [BigNumberish[], BigNumberish, BigNumberish]
@@ -193,10 +188,6 @@ export interface SwapFlashLoanInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "MAX_BPS", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
@@ -487,8 +478,6 @@ export interface SwapFlashLoan extends BaseContract {
   functions: {
     MAX_BPS(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -674,8 +663,6 @@ export interface SwapFlashLoan extends BaseContract {
 
   MAX_BPS(overrides?: CallOverrides): Promise<BigNumber>;
 
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
-
   addLiquidity(
     amounts: BigNumberish[],
     minToMint: BigNumberish,
@@ -860,8 +847,6 @@ export interface SwapFlashLoan extends BaseContract {
 
   callStatic: {
     MAX_BPS(overrides?: CallOverrides): Promise<BigNumber>;
-
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
 
     addLiquidity(
       amounts: BigNumberish[],
@@ -1170,8 +1155,6 @@ export interface SwapFlashLoan extends BaseContract {
   estimateGas: {
     MAX_BPS(overrides?: CallOverrides): Promise<BigNumber>;
 
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -1340,8 +1323,6 @@ export interface SwapFlashLoan extends BaseContract {
 
   populateTransaction: {
     MAX_BPS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     addLiquidity(
       amounts: BigNumberish[],
