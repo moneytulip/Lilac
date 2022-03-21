@@ -18,7 +18,6 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../Authentication.sol";
 import "../helpers/BalancerErrors.sol";
-import "../helpers/TemporarilyPausable.sol";
 import "../helpers/BalancerErrors.sol";
 import "../helpers/SignaturesValidator.sol";
 
@@ -34,8 +33,7 @@ abstract contract VaultAuthorization is
     IVault,
     ReentrancyGuard,
     Authentication,
-    SignaturesValidator,
-    TemporarilyPausable
+    SignaturesValidator
 {
     // Ideally, we'd store the type hashes as immutable state variables to avoid computing the hash at runtime, but
     // unfortunately immutable variables cannot be used in assembly, so we just keep the precomputed hashes instead.
@@ -98,7 +96,7 @@ abstract contract VaultAuthorization is
         address sender,
         address relayer,
         bool approved
-    ) external override nonReentrant whenNotPaused authenticateFor(sender) {
+    ) external override nonReentrant authenticateFor(sender) {
         _approvedRelayers[sender][relayer] = approved;
         emit RelayerApprovalChanged(relayer, sender, approved);
     }

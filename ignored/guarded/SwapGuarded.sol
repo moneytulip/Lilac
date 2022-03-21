@@ -411,7 +411,7 @@ contract SwapGuarded is OwnerPausable, ReentrancyGuard {
     )
         external
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -440,7 +440,7 @@ contract SwapGuarded is OwnerPausable, ReentrancyGuard {
     )
         external
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -482,7 +482,7 @@ contract SwapGuarded is OwnerPausable, ReentrancyGuard {
     )
         external
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -511,7 +511,7 @@ contract SwapGuarded is OwnerPausable, ReentrancyGuard {
     )
         external
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {

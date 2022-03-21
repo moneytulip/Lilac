@@ -20,6 +20,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "./VaultAuthorization.sol";
 
+import "hardhat/console.sol";
+
 /**
  * @dev Maintains the Pool ID data structure, implements Pool ID creation and registration, and defines useful modifiers
  * and helper functions for ensuring correct behavior when working with Pools.
@@ -68,7 +70,6 @@ abstract contract PoolRegistry is ReentrancyGuard, VaultAuthorization {
         external
         override
         nonReentrant
-        whenNotPaused
         returns (bytes32)
     {
         // Each Pool is assigned a unique ID based on an incrementing nonce. This assumes there will never be more than
@@ -134,7 +135,7 @@ abstract contract PoolRegistry is ReentrancyGuard, VaultAuthorization {
     function _getPoolAddress(bytes32 poolId) internal pure returns (address) {
         // 12 byte logical shift left to remove the nonce and specialization setting. We don't need to mask,
         // since the logical shift already sets the upper bits to zero.
-        return address(uint160(uint256(poolId)) >> (12 * 8));
+        return address(uint160(uint256(poolId) >> (12 * 8)));
     }
 
     /**

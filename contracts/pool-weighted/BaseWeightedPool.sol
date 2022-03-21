@@ -40,8 +40,6 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         IERC20[] memory tokens,
         address[] memory assetManagers,
         uint256 swapFeePercentage,
-        uint256 pauseWindowDuration,
-        uint256 bufferPeriodDuration,
         address owner
     )
         LegacyBasePool(
@@ -55,8 +53,6 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
             tokens,
             assetManagers,
             swapFeePercentage,
-            pauseWindowDuration,
-            bufferPeriodDuration,
             owner
         )
     {
@@ -111,7 +107,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         SwapRequest memory swapRequest,
         uint256 currentBalanceTokenIn,
         uint256 currentBalanceTokenOut
-    ) internal virtual override whenNotPaused returns (uint256) {
+    ) internal virtual override returns (uint256) {
         // Swaps are disabled while the contract is paused.
 
         return
@@ -128,7 +124,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         SwapRequest memory swapRequest,
         uint256 currentBalanceTokenIn,
         uint256 currentBalanceTokenOut
-    ) internal virtual override whenNotPaused returns (uint256) {
+    ) internal virtual override returns (uint256) {
         // Swaps are disabled while the contract is paused.
 
         return
@@ -149,7 +145,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         address,
         uint256[] memory scalingFactors,
         bytes memory userData
-    ) internal virtual override whenNotPaused returns (uint256, uint256[] memory) {
+    ) internal virtual override returns (uint256, uint256[] memory) {
         // It would be strange for the Pool to be paused before it is initialized, but for consistency we prevent
         // initialization in this case.
 
@@ -188,7 +184,6 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         internal
         virtual
         override
-        whenNotPaused
         returns (
             uint256,
             uint256[] memory,
@@ -347,7 +342,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         // Exits are not completely disabled while the contract is paused: proportional exits (exact BPT in for tokens
         // out) remain functional.
 
-        if (_isNotPaused()) {
+        // if (_isNotPaused()) {
             // Due protocol swap fee amounts are computed by measuring the growth of the invariant between the previous
             // join or exit event and now - the invariant's growth is due exclusively to swap fees. This avoids
             // spending gas calculating the fees on each individual swap.
@@ -363,11 +358,12 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
 
             // Update current balances by subtracting the protocol fee amounts
             _mutateAmounts(balances, dueProtocolFeeAmounts, FixedPoint.sub);
-        } else {
+        /* else {
             // If the contract is paused, swap protocol fee amounts are not charged to avoid extra calculations and
             // reduce the potential for errors.
             dueProtocolFeeAmounts = new uint256[](_getTotalTokens());
         }
+        */
 
         (bptAmountIn, amountsOut) = _doExit(balances, normalizedWeights, scalingFactors, userData);
 
@@ -410,7 +406,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         uint256[] memory balances,
         uint256[] memory normalizedWeights,
         bytes memory userData
-    ) private whenNotPaused returns (uint256, uint256[] memory) {
+    ) private returns (uint256, uint256[] memory) {
         // This exit function is disabled if the contract is paused.
 
         (uint256 bptAmountIn, uint256 tokenIndex) = userData.exactBptInForTokenOut();
@@ -460,7 +456,7 @@ abstract contract BaseWeightedPool is LegacyBaseMinimalSwapInfoPool {
         uint256[] memory normalizedWeights,
         uint256[] memory scalingFactors,
         bytes memory userData
-    ) private whenNotPaused returns (uint256, uint256[] memory) {
+    ) private returns (uint256, uint256[] memory) {
         // This exit function is disabled if the contract is paused.
 
         (uint256[] memory amountsOut, uint256 maxBPTAmountIn) = userData.bptInForExactTokensOut();

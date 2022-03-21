@@ -86,7 +86,7 @@ abstract contract UserBalance is ReentrancyGuard, AssetTransfersHandler, VaultAu
                 // We cache the result of the pause check and skip it for other operations in this same transaction
                 // (if any).
                 if (!checkedNotPaused) {
-                    _ensureNotPaused();
+                    // _ensureNotPaused();
                     checkedNotPaused = true;
                 }
 

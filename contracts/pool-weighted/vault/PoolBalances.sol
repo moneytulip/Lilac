@@ -45,7 +45,7 @@ abstract contract PoolBalances is Fees, ReentrancyGuard, PoolTokens, UserBalance
         address sender,
         address recipient,
         JoinPoolRequest memory request
-    ) external payable override whenNotPaused {
+    ) external payable override  {
         // This function doesn't have the nonReentrant modifier: it is applied to `_joinOrExit` instead.
 
         // Note that `recipient` is not actually payable in the context of a join - we cast it because we handle both

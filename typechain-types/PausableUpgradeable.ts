@@ -17,20 +17,11 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface PausableUpgradeableInterface extends utils.Interface {
   contractName: "PausableUpgradeable";
   functions: {
-    "_initialized()": FunctionFragment;
     "paused()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
 
   events: {
@@ -78,18 +69,12 @@ export interface PausableUpgradeable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     paused(overrides?: CallOverrides): Promise<[boolean]>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     paused(overrides?: CallOverrides): Promise<boolean>;
   };
 
@@ -102,14 +87,10 @@ export interface PausableUpgradeable extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     paused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -16,7 +16,6 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./ISignaturesValidator.sol";
-import "./ITemporarilyPausable.sol";
 import "./IWETH.sol";
 
 import "./IAsset.sol";
@@ -30,7 +29,7 @@ pragma solidity 0.8.9;
  * @dev Full external interface for the Vault core contract - no external or public methods exist in the contract that
  * don't override one of these declarations.
  */
-interface IVault is ISignaturesValidator, ITemporarilyPausable {
+interface IVault is ISignaturesValidator {
     // Generalities about the Vault:
     //
     // - Whenever documentation refers to 'tokens', it strictly refers to ERC20-compliant token contracts. Tokens are
@@ -696,7 +695,7 @@ interface IVault is ISignaturesValidator, ITemporarilyPausable {
      *
      * For each operation, the caller must be registered as the Asset Manager for `token` in `poolId`.
      */
-    function managePoolBalance(PoolBalanceOp[] memory ops) external;
+    // function managePoolBalance(PoolBalanceOp[] memory ops) external;
 
     struct PoolBalanceOp {
         PoolBalanceOpKind kind;
@@ -761,7 +760,7 @@ interface IVault is ISignaturesValidator, ITemporarilyPausable {
      *
      * Internal Balance can still be withdrawn, and Pools exited.
      */
-    function setPaused(bool paused) external;
+    // function setPaused(bool paused) external;
 
     /**
      * @dev Returns the Vault's WETH instance.

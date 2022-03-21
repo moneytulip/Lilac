@@ -40,19 +40,6 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-    ],
-    name: "PausedStateChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: "uint256",
         name: "swapFeePercentage",
         type: "uint256",
@@ -243,29 +230,6 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getPausedState",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-      {
-        internalType: "uint256",
-        name: "pauseWindowEndTime",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "bufferPeriodEndTime",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -652,19 +616,6 @@ const _abi = [
       },
     ],
     name: "setAssetManagerPoolConfig",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-    ],
-    name: "setPaused",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -19,7 +19,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import "./math/Math.sol";
 import "./math/FixedPoint.sol";
-import "./helpers/TemporarilyPausable.sol";
 import "./WordCodec.sol";
 
 import "./interfaces/IVault.sol";
@@ -46,7 +45,7 @@ import "./BasePoolAuthorization.sol";
  * BaseGeneralPool or BaseMinimalSwapInfoPool. Otherwise, subclasses must inherit from the corresponding interfaces
  * and implement the swap callbacks themselves.
  */
-abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPoolToken, TemporarilyPausable {
+abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPoolToken {
     using WordCodec for bytes32;
     using FixedPoint for uint256;
 
@@ -77,8 +76,6 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         IERC20[] memory tokens,
         address[] memory assetManagers,
         uint256 swapFeePercentage,
-        uint256 pauseWindowDuration,
-        uint256 bufferPeriodDuration,
         address owner
     )
         // Base Pools are expected to be deployed using factories. By using the factory address as the action
@@ -89,7 +86,6 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         Authentication(bytes32(uint256(uint160(address(msg.sender)))))
         BalancerPoolToken(name, symbol, vault)
         BasePoolAuthorization(owner)
-        TemporarilyPausable(pauseWindowDuration, bufferPeriodDuration)
     {
         _require(tokens.length >= _MIN_TOKENS, Errors.MIN_TOKENS);
         _require(tokens.length <= _getMaxTokens(), Errors.MAX_TOKENS);
@@ -136,7 +132,7 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         return _miscData.decodeUint64(_SWAP_FEE_PERCENTAGE_OFFSET);
     }
 
-    function setSwapFeePercentage(uint256 swapFeePercentage) public virtual authenticate whenNotPaused {
+    function setSwapFeePercentage(uint256 swapFeePercentage) public virtual authenticate {
         _setSwapFeePercentage(swapFeePercentage);
     }
 
@@ -152,7 +148,6 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         public
         virtual
         authenticate
-        whenNotPaused
     {
         _setAssetManagerPoolConfig(token, poolConfig);
     }
@@ -164,9 +159,9 @@ abstract contract LegacyBasePool is IBasePool, BasePoolAuthorization, BalancerPo
         IAssetManager(assetManager).setConfig(poolId, poolConfig);
     }
 
-    function setPaused(bool paused) external authenticate {
-        _setPaused(paused);
-    }
+    // function setPaused(bool paused) external authenticate {
+    //     _setPaused(paused);
+    // }
 
     function _isOwnerOnlyAction(bytes32 actionId) internal view virtual override returns (bool) {
         return

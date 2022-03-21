@@ -111,19 +111,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-    ],
-    name: "PausedStateChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "bytes32",
         name: "poolId",
@@ -597,29 +584,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getPausedState",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-      {
-        internalType: "uint256",
-        name: "pauseWindowEndTime",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "bufferPeriodEndTime",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "bytes32",
@@ -803,41 +767,6 @@ const _abi = [
       {
         components: [
           {
-            internalType: "enum IVault.PoolBalanceOpKind",
-            name: "kind",
-            type: "uint8",
-          },
-          {
-            internalType: "bytes32",
-            name: "poolId",
-            type: "bytes32",
-          },
-          {
-            internalType: "contract IERC20",
-            name: "token",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct IVault.PoolBalanceOp[]",
-        name: "ops",
-        type: "tuple[]",
-      },
-    ],
-    name: "managePoolBalance",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
             internalType: "enum IVault.UserBalanceOpKind",
             name: "kind",
             type: "uint8",
@@ -1007,19 +936,6 @@ const _abi = [
       },
     ],
     name: "setAuthorizer",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bool",
-        name: "paused",
-        type: "bool",
-      },
-    ],
-    name: "setPaused",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

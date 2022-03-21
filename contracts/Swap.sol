@@ -369,7 +369,7 @@ contract Swap is OwnerPausableUpgradeable, ReentrancyGuardUpgradeable {
         external
         virtual
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -392,7 +392,7 @@ contract Swap is OwnerPausableUpgradeable, ReentrancyGuardUpgradeable {
         external
         virtual
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -441,7 +441,7 @@ contract Swap is OwnerPausableUpgradeable, ReentrancyGuardUpgradeable {
         external
         virtual
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -471,7 +471,7 @@ contract Swap is OwnerPausableUpgradeable, ReentrancyGuardUpgradeable {
         external
         virtual
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {

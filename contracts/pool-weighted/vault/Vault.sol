@@ -60,15 +60,9 @@ import "./Swaps.sol";
 contract Vault is VaultAuthorization, FlashLoans, Swaps {
     constructor(
         IAuthorizer authorizer,
-        IWETH weth,
-        uint256 pauseWindowDuration,
-        uint256 bufferPeriodDuration
-    ) VaultAuthorization(authorizer) AssetHelpers(weth) TemporarilyPausable(pauseWindowDuration, bufferPeriodDuration) {
+        IWETH weth
+    ) VaultAuthorization(authorizer) AssetHelpers(weth) {
         // solhint-disable-previous-line no-empty-blocks
-    }
-
-    function setPaused(bool paused) external override nonReentrant authenticate {
-        _setPaused(paused);
     }
 
     // solhint-disable-next-line func-name-mixedcase

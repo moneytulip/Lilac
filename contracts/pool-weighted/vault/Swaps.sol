@@ -63,7 +63,7 @@ abstract contract Swaps is ReentrancyGuard, PoolBalances {
         payable
         override
         nonReentrant
-        whenNotPaused
+        
         authenticateFor(funds.sender)
         returns (uint256 amountCalculated)
     {
@@ -116,7 +116,7 @@ abstract contract Swaps is ReentrancyGuard, PoolBalances {
         payable
         override
         nonReentrant
-        whenNotPaused
+        
         authenticateFor(funds.sender)
         returns (int256[] memory assetDeltas)
     {

@@ -284,7 +284,7 @@ contract MetaSwap is Swap {
         virtual
         override
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -317,7 +317,7 @@ contract MetaSwap is Swap {
         external
         virtual
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -349,7 +349,7 @@ contract MetaSwap is Swap {
         virtual
         override
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -381,7 +381,7 @@ contract MetaSwap is Swap {
         virtual
         override
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {
@@ -414,7 +414,7 @@ contract MetaSwap is Swap {
         virtual
         override
         nonReentrant
-        whenNotPaused
+        
         deadlineCheck(deadline)
         returns (uint256)
     {

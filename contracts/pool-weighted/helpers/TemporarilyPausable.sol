@@ -58,7 +58,7 @@ abstract contract TemporarilyPausable is ITemporarilyPausable {
     /**
      * @dev Reverts if the contract is paused.
      */
-    modifier whenNotPaused() {
+    modifier whenNotPaused () {
         _ensureNotPaused();
         _;
     }

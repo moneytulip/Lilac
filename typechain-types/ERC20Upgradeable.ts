@@ -20,7 +20,6 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface ERC20UpgradeableInterface extends utils.Interface {
   contractName: "ERC20Upgradeable";
   functions: {
-    "_initialized()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -34,10 +33,6 @@ export interface ERC20UpgradeableInterface extends utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -71,10 +66,6 @@ export interface ERC20UpgradeableInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -150,8 +141,6 @@ export interface ERC20Upgradeable extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     allowance(
       owner: string,
       spender: string,
@@ -199,8 +188,6 @@ export interface ERC20Upgradeable extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   allowance(
     owner: string,
@@ -250,8 +237,6 @@ export interface ERC20Upgradeable extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     allowance(
       owner: string,
       spender: string,
@@ -325,8 +310,6 @@ export interface ERC20Upgradeable extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: string,
       spender: string,
@@ -376,8 +359,6 @@ export interface ERC20Upgradeable extends BaseContract {
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     allowance(
       owner: string,
       spender: string,

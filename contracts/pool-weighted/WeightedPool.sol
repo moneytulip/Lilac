@@ -9,7 +9,7 @@ import "./BaseWeightedPool.sol";
 contract WeightedPool is BaseWeightedPool {
     using FixedPoint for uint256;
 
-    uint256 private constant _MAX_TOKENS = 20;
+    uint256 private constant _MAX_TOKENS = 10;
 
     uint256 private immutable _totalTokens;
 
@@ -23,16 +23,6 @@ contract WeightedPool is BaseWeightedPool {
     IERC20 internal immutable _token7;
     IERC20 internal immutable _token8;
     IERC20 internal immutable _token9;
-    IERC20 internal immutable _token10;
-    IERC20 internal immutable _token11;
-    IERC20 internal immutable _token12;
-    IERC20 internal immutable _token13;
-    IERC20 internal immutable _token14;
-    IERC20 internal immutable _token15;
-    IERC20 internal immutable _token16;
-    IERC20 internal immutable _token17;
-    IERC20 internal immutable _token18;
-    IERC20 internal immutable _token19;
 
     // All token balances are normalized to behave as if the token had 18 decimals. We assume a token's decimals will
     // not change throughout its lifetime, and store the corresponding scaling factor for each at construction time.
@@ -48,16 +38,6 @@ contract WeightedPool is BaseWeightedPool {
     uint256 internal immutable _scalingFactor7;
     uint256 internal immutable _scalingFactor8;
     uint256 internal immutable _scalingFactor9;
-    uint256 internal immutable _scalingFactor10;
-    uint256 internal immutable _scalingFactor11;
-    uint256 internal immutable _scalingFactor12;
-    uint256 internal immutable _scalingFactor13;
-    uint256 internal immutable _scalingFactor14;
-    uint256 internal immutable _scalingFactor15;
-    uint256 internal immutable _scalingFactor16;
-    uint256 internal immutable _scalingFactor17;
-    uint256 internal immutable _scalingFactor18;
-    uint256 internal immutable _scalingFactor19;
 
     // The protocol fees will always be charged using the token associated with the max weight in the pool.
     // Since these Pools will register tokens only once, we can assume this index will be constant.
@@ -73,16 +53,6 @@ contract WeightedPool is BaseWeightedPool {
     uint256 internal immutable _normalizedWeight7;
     uint256 internal immutable _normalizedWeight8;
     uint256 internal immutable _normalizedWeight9;
-    uint256 internal immutable _normalizedWeight10;
-    uint256 internal immutable _normalizedWeight11;
-    uint256 internal immutable _normalizedWeight12;
-    uint256 internal immutable _normalizedWeight13;
-    uint256 internal immutable _normalizedWeight14;
-    uint256 internal immutable _normalizedWeight15;
-    uint256 internal immutable _normalizedWeight16;
-    uint256 internal immutable _normalizedWeight17;
-    uint256 internal immutable _normalizedWeight18;
-    uint256 internal immutable _normalizedWeight19;
 
     constructor(
         IVault vault,
@@ -92,8 +62,6 @@ contract WeightedPool is BaseWeightedPool {
         uint256[] memory normalizedWeights,
         address[] memory assetManagers,
         uint256 swapFeePercentage,
-        uint256 pauseWindowDuration,
-        uint256 bufferPeriodDuration,
         address owner
     )
         BaseWeightedPool(
@@ -103,8 +71,6 @@ contract WeightedPool is BaseWeightedPool {
             tokens,
             assetManagers,
             swapFeePercentage,
-            pauseWindowDuration,
-            bufferPeriodDuration,
             owner
         )
     {
@@ -142,16 +108,6 @@ contract WeightedPool is BaseWeightedPool {
         _normalizedWeight7 = numTokens > 7 ? normalizedWeights[7] : 0;
         _normalizedWeight8 = numTokens > 8 ? normalizedWeights[8] : 0;
         _normalizedWeight9 = numTokens > 9 ? normalizedWeights[9] : 0;
-        _normalizedWeight10 = numTokens > 10 ? normalizedWeights[10] : 0;
-        _normalizedWeight11 = numTokens > 11 ? normalizedWeights[11] : 0;
-        _normalizedWeight12 = numTokens > 12 ? normalizedWeights[12] : 0;
-        _normalizedWeight13 = numTokens > 13 ? normalizedWeights[13] : 0;
-        _normalizedWeight14 = numTokens > 14 ? normalizedWeights[14] : 0;
-        _normalizedWeight15 = numTokens > 15 ? normalizedWeights[15] : 0;
-        _normalizedWeight16 = numTokens > 16 ? normalizedWeights[16] : 0;
-        _normalizedWeight17 = numTokens > 17 ? normalizedWeights[17] : 0;
-        _normalizedWeight18 = numTokens > 18 ? normalizedWeights[18] : 0;
-        _normalizedWeight19 = numTokens > 19 ? normalizedWeights[19] : 0;
 
         // Immutable variables cannot be initialized inside an if statement, so we must do conditional assignments
         _token0 = tokens[0];
@@ -164,16 +120,6 @@ contract WeightedPool is BaseWeightedPool {
         _token7 = numTokens > 7 ? tokens[7] : IERC20(address(0));
         _token8 = numTokens > 8 ? tokens[8] : IERC20(address(0));
         _token9 = numTokens > 9 ? tokens[9] : IERC20(address(0));
-        _token10 = numTokens > 10 ? tokens[10] : IERC20(address(0));
-        _token11 = numTokens > 11 ? tokens[11] : IERC20(address(0));
-        _token12 = numTokens > 12 ? tokens[12] : IERC20(address(0));
-        _token13 = numTokens > 13 ? tokens[13] : IERC20(address(0));
-        _token14 = numTokens > 14 ? tokens[14] : IERC20(address(0));
-        _token15 = numTokens > 15 ? tokens[15] : IERC20(address(0));
-        _token16 = numTokens > 16 ? tokens[16] : IERC20(address(0));
-        _token17 = numTokens > 17 ? tokens[17] : IERC20(address(0));
-        _token18 = numTokens > 18 ? tokens[18] : IERC20(address(0));
-        _token19 = numTokens > 19 ? tokens[19] : IERC20(address(0));
 
         _scalingFactor0 = _computeScalingFactor(tokens[0]);
         _scalingFactor1 = _computeScalingFactor(tokens[1]);
@@ -185,16 +131,6 @@ contract WeightedPool is BaseWeightedPool {
         _scalingFactor7 = numTokens > 7 ? _computeScalingFactor(tokens[7]) : 0;
         _scalingFactor8 = numTokens > 8 ? _computeScalingFactor(tokens[8]) : 0;
         _scalingFactor9 = numTokens > 9 ? _computeScalingFactor(tokens[9]) : 0;
-        _scalingFactor10 = numTokens > 10 ? _computeScalingFactor(tokens[10]) : 0;
-        _scalingFactor11 = numTokens > 11 ? _computeScalingFactor(tokens[11]) : 0;
-        _scalingFactor12 = numTokens > 12 ? _computeScalingFactor(tokens[12]) : 0;
-        _scalingFactor13 = numTokens > 13 ? _computeScalingFactor(tokens[13]) : 0;
-        _scalingFactor14 = numTokens > 14 ? _computeScalingFactor(tokens[14]) : 0;
-        _scalingFactor15 = numTokens > 15 ? _computeScalingFactor(tokens[15]) : 0;
-        _scalingFactor16 = numTokens > 16 ? _computeScalingFactor(tokens[16]) : 0;
-        _scalingFactor17 = numTokens > 17 ? _computeScalingFactor(tokens[17]) : 0;
-        _scalingFactor18 = numTokens > 18 ? _computeScalingFactor(tokens[18]) : 0;
-        _scalingFactor19 = numTokens > 19 ? _computeScalingFactor(tokens[19]) : 0;
     }
 
     function _getNormalizedWeight(IERC20 token) internal view virtual override returns (uint256) {
@@ -209,16 +145,6 @@ contract WeightedPool is BaseWeightedPool {
         else if (token == _token7) { return _normalizedWeight7; }
         else if (token == _token8) { return _normalizedWeight8; }
         else if (token == _token9) { return _normalizedWeight9; }
-        else if (token == _token10) { return _normalizedWeight10; }
-        else if (token == _token11) { return _normalizedWeight11; }
-        else if (token == _token12) { return _normalizedWeight12; }
-        else if (token == _token13) { return _normalizedWeight13; }
-        else if (token == _token14) { return _normalizedWeight14; }
-        else if (token == _token15) { return _normalizedWeight15; }
-        else if (token == _token16) { return _normalizedWeight16; }
-        else if (token == _token17) { return _normalizedWeight17; }
-        else if (token == _token18) { return _normalizedWeight18; }
-        else if (token == _token19) { return _normalizedWeight19; }
         else {
             _revert(Errors.INVALID_TOKEN);
         }
@@ -240,16 +166,6 @@ contract WeightedPool is BaseWeightedPool {
             if (totalTokens > 7) { normalizedWeights[7] = _normalizedWeight7; } else { return normalizedWeights; }
             if (totalTokens > 8) { normalizedWeights[8] = _normalizedWeight8; } else { return normalizedWeights; }
             if (totalTokens > 9) { normalizedWeights[9] = _normalizedWeight9; } else { return normalizedWeights; }
-            if (totalTokens > 10) { normalizedWeights[10] = _normalizedWeight10; } else { return normalizedWeights; }
-            if (totalTokens > 11) { normalizedWeights[11] = _normalizedWeight11; } else { return normalizedWeights; }
-            if (totalTokens > 12) { normalizedWeights[12] = _normalizedWeight12; } else { return normalizedWeights; }
-            if (totalTokens > 13) { normalizedWeights[13] = _normalizedWeight13; } else { return normalizedWeights; }
-            if (totalTokens > 14) { normalizedWeights[14] = _normalizedWeight14; } else { return normalizedWeights; }
-            if (totalTokens > 15) { normalizedWeights[15] = _normalizedWeight15; } else { return normalizedWeights; }
-            if (totalTokens > 16) { normalizedWeights[16] = _normalizedWeight16; } else { return normalizedWeights; }
-            if (totalTokens > 17) { normalizedWeights[17] = _normalizedWeight17; } else { return normalizedWeights; }
-            if (totalTokens > 18) { normalizedWeights[18] = _normalizedWeight18; } else { return normalizedWeights; }
-            if (totalTokens > 19) { normalizedWeights[19] = _normalizedWeight19; } else { return normalizedWeights; }
         }
 
         return normalizedWeights;
@@ -289,16 +205,6 @@ contract WeightedPool is BaseWeightedPool {
         else if (token == _token7) { return _scalingFactor7; }
         else if (token == _token8) { return _scalingFactor8; }
         else if (token == _token9) { return _scalingFactor9; }
-        else if (token == _token10) { return _scalingFactor10; }
-        else if (token == _token11) { return _scalingFactor11; }
-        else if (token == _token12) { return _scalingFactor12; }
-        else if (token == _token13) { return _scalingFactor13; }
-        else if (token == _token14) { return _scalingFactor14; }
-        else if (token == _token15) { return _scalingFactor15; }
-        else if (token == _token16) { return _scalingFactor16; }
-        else if (token == _token17) { return _scalingFactor17; }
-        else if (token == _token18) { return _scalingFactor18; }
-        else if (token == _token19) { return _scalingFactor19; }
         else {
             _revert(Errors.INVALID_TOKEN);
         }
@@ -320,16 +226,6 @@ contract WeightedPool is BaseWeightedPool {
             if (totalTokens > 7) { scalingFactors[7] = _scalingFactor7; } else { return scalingFactors; }
             if (totalTokens > 8) { scalingFactors[8] = _scalingFactor8; } else { return scalingFactors; }
             if (totalTokens > 9) { scalingFactors[9] = _scalingFactor9; } else { return scalingFactors; }
-            if (totalTokens > 10) { scalingFactors[10] = _scalingFactor10; } else { return scalingFactors; }
-            if (totalTokens > 11) { scalingFactors[11] = _scalingFactor11; } else { return scalingFactors; }
-            if (totalTokens > 12) { scalingFactors[12] = _scalingFactor12; } else { return scalingFactors; }
-            if (totalTokens > 13) { scalingFactors[13] = _scalingFactor13; } else { return scalingFactors; }
-            if (totalTokens > 14) { scalingFactors[14] = _scalingFactor14; } else { return scalingFactors; }
-            if (totalTokens > 15) { scalingFactors[15] = _scalingFactor15; } else { return scalingFactors; }
-            if (totalTokens > 16) { scalingFactors[16] = _scalingFactor16; } else { return scalingFactors; }
-            if (totalTokens > 17) { scalingFactors[17] = _scalingFactor17; } else { return scalingFactors; }
-            if (totalTokens > 18) { scalingFactors[18] = _scalingFactor18; } else { return scalingFactors; }
-            if (totalTokens > 19) { scalingFactors[19] = _scalingFactor19; } else { return scalingFactors; }
         }
 
         return scalingFactors;

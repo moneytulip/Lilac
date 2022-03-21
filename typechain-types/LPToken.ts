@@ -20,7 +20,6 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface LPTokenInterface extends utils.Interface {
   contractName: "LPToken";
   functions: {
-    "_initialized()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -41,10 +40,6 @@ export interface LPTokenInterface extends utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -100,10 +95,6 @@ export interface LPTokenInterface extends utils.Interface {
     values: [string]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -202,8 +193,6 @@ export interface LPToken extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     allowance(
       owner: string,
       spender: string,
@@ -285,8 +274,6 @@ export interface LPToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   allowance(
     owner: string,
@@ -370,8 +357,6 @@ export interface LPToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     allowance(
       owner: string,
       spender: string,
@@ -483,8 +468,6 @@ export interface LPToken extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: string,
       spender: string,
@@ -568,8 +551,6 @@ export interface LPToken extends BaseContract {
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     allowance(
       owner: string,
       spender: string,

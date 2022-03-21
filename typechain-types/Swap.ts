@@ -20,7 +20,6 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface SwapInterface extends utils.Interface {
   contractName: "Swap";
   functions: {
-    "_initialized()": FunctionFragment;
     "addLiquidity(uint256[],uint256,uint256)": FunctionFragment;
     "calculateRemoveLiquidity(uint256)": FunctionFragment;
     "calculateRemoveLiquidityOneToken(uint256,uint8)": FunctionFragment;
@@ -52,10 +51,6 @@ export interface SwapInterface extends utils.Interface {
     "withdrawAdminFees()": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "_initialized",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
     values: [BigNumberish[], BigNumberish, BigNumberish]
@@ -170,10 +165,6 @@ export interface SwapInterface extends utils.Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "_initialized",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
     data: BytesLike
@@ -434,8 +425,6 @@ export interface Swap extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _initialized(overrides?: CallOverrides): Promise<[boolean]>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -600,8 +589,6 @@ export interface Swap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  _initialized(overrides?: CallOverrides): Promise<boolean>;
 
   addLiquidity(
     amounts: BigNumberish[],
@@ -768,8 +755,6 @@ export interface Swap extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _initialized(overrides?: CallOverrides): Promise<boolean>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -1042,8 +1027,6 @@ export interface Swap extends BaseContract {
   };
 
   estimateGas: {
-    _initialized(overrides?: CallOverrides): Promise<BigNumber>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,
@@ -1193,8 +1176,6 @@ export interface Swap extends BaseContract {
   };
 
   populateTransaction: {
-    _initialized(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     addLiquidity(
       amounts: BigNumberish[],
       minToMint: BigNumberish,

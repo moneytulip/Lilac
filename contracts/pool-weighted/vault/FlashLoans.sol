@@ -31,7 +31,7 @@ import "../interfaces/IFlashLoanRecipient.sol";
  * @dev Handles Flash Loans through the Vault. Calls the `receiveFlashLoan` hook on the flash loan recipient
  * contract, which implements the `IFlashLoanRecipient` interface.
  */
-abstract contract FlashLoans is Fees, ReentrancyGuard, TemporarilyPausable {
+abstract contract FlashLoans is Fees, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     function flashLoan(
@@ -39,7 +39,7 @@ abstract contract FlashLoans is Fees, ReentrancyGuard, TemporarilyPausable {
         IERC20[] memory tokens,
         uint256[] memory amounts,
         bytes memory userData
-    ) external override nonReentrant whenNotPaused {
+    ) external override nonReentrant  {
         InputHelpers.ensureInputLengthMatch(tokens.length, amounts.length);
 
         uint256[] memory feeAmounts = new uint256[](tokens.length);

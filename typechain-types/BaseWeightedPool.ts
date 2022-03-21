@@ -68,7 +68,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     "getLastInvariant()": FunctionFragment;
     "getNormalizedWeights()": FunctionFragment;
     "getOwner()": FunctionFragment;
-    "getPausedState()": FunctionFragment;
     "getPoolId()": FunctionFragment;
     "getRate()": FunctionFragment;
     "getScalingFactors()": FunctionFragment;
@@ -84,7 +83,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     "queryExit(bytes32,address,address,uint256[],uint256,uint256,bytes)": FunctionFragment;
     "queryJoin(bytes32,address,address,uint256[],uint256,uint256,bytes)": FunctionFragment;
     "setAssetManagerPoolConfig(address,bytes)": FunctionFragment;
-    "setPaused(bool)": FunctionFragment;
     "setSwapFeePercentage(uint256)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -131,10 +129,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "getOwner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getPausedState",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "getPoolId", values?: undefined): string;
   encodeFunctionData(functionFragment: "getRate", values?: undefined): string;
   encodeFunctionData(
@@ -220,7 +214,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     functionFragment: "setAssetManagerPoolConfig",
     values: [string, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "setPaused", values: [boolean]): string;
   encodeFunctionData(
     functionFragment: "setSwapFeePercentage",
     values: [BigNumberish]
@@ -272,10 +265,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getOwner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getPausedState",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getPoolId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getRate", data: BytesLike): Result;
   decodeFunctionResult(
@@ -303,7 +292,6 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
     functionFragment: "setAssetManagerPoolConfig",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setPaused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setSwapFeePercentage",
     data: BytesLike
@@ -321,13 +309,11 @@ export interface BaseWeightedPoolInterface extends utils.Interface {
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
-    "PausedStateChanged(bool)": EventFragment;
     "SwapFeePercentageChanged(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PausedStateChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SwapFeePercentageChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
@@ -338,14 +324,6 @@ export type ApprovalEvent = TypedEvent<
 >;
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
-
-export type PausedStateChangedEvent = TypedEvent<
-  [boolean],
-  { paused: boolean }
->;
-
-export type PausedStateChangedEventFilter =
-  TypedEventFilter<PausedStateChangedEvent>;
 
 export type SwapFeePercentageChangedEvent = TypedEvent<
   [BigNumber],
@@ -428,16 +406,6 @@ export interface BaseWeightedPool extends BaseContract {
     getNormalizedWeights(overrides?: CallOverrides): Promise<[BigNumber[]]>;
 
     getOwner(overrides?: CallOverrides): Promise<[string]>;
-
-    getPausedState(
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber] & {
-        paused: boolean;
-        pauseWindowEndTime: BigNumber;
-        bufferPeriodEndTime: BigNumber;
-      }
-    >;
 
     getPoolId(overrides?: CallOverrides): Promise<[string]>;
 
@@ -527,11 +495,6 @@ export interface BaseWeightedPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setPaused(
-      paused: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     setSwapFeePercentage(
       swapFeePercentage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -590,16 +553,6 @@ export interface BaseWeightedPool extends BaseContract {
   getNormalizedWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getOwner(overrides?: CallOverrides): Promise<string>;
-
-  getPausedState(
-    overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber] & {
-      paused: boolean;
-      pauseWindowEndTime: BigNumber;
-      bufferPeriodEndTime: BigNumber;
-    }
-  >;
 
   getPoolId(overrides?: CallOverrides): Promise<string>;
 
@@ -689,11 +642,6 @@ export interface BaseWeightedPool extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setPaused(
-    paused: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   setSwapFeePercentage(
     swapFeePercentage: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -755,16 +703,6 @@ export interface BaseWeightedPool extends BaseContract {
     getNormalizedWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getOwner(overrides?: CallOverrides): Promise<string>;
-
-    getPausedState(
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber] & {
-        paused: boolean;
-        pauseWindowEndTime: BigNumber;
-        bufferPeriodEndTime: BigNumber;
-      }
-    >;
 
     getPoolId(overrides?: CallOverrides): Promise<string>;
 
@@ -858,8 +796,6 @@ export interface BaseWeightedPool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setPaused(paused: boolean, overrides?: CallOverrides): Promise<void>;
-
     setSwapFeePercentage(
       swapFeePercentage: BigNumberish,
       overrides?: CallOverrides
@@ -894,9 +830,6 @@ export interface BaseWeightedPool extends BaseContract {
       spender?: string | null,
       value?: null
     ): ApprovalEventFilter;
-
-    "PausedStateChanged(bool)"(paused?: null): PausedStateChangedEventFilter;
-    PausedStateChanged(paused?: null): PausedStateChangedEventFilter;
 
     "SwapFeePercentageChanged(uint256)"(
       swapFeePercentage?: null
@@ -956,8 +889,6 @@ export interface BaseWeightedPool extends BaseContract {
     getNormalizedWeights(overrides?: CallOverrides): Promise<BigNumber>;
 
     getOwner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getPausedState(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPoolId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1047,11 +978,6 @@ export interface BaseWeightedPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setPaused(
-      paused: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     setSwapFeePercentage(
       swapFeePercentage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1119,8 +1045,6 @@ export interface BaseWeightedPool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getPausedState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getPoolId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1212,11 +1136,6 @@ export interface BaseWeightedPool extends BaseContract {
     setAssetManagerPoolConfig(
       token: string,
       poolConfig: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setPaused(
-      paused: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

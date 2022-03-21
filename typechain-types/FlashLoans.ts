@@ -98,20 +98,6 @@ export declare namespace IVault {
     fromInternalBalance: boolean;
   };
 
-  export type PoolBalanceOpStruct = {
-    kind: BigNumberish;
-    poolId: BytesLike;
-    token: string;
-    amount: BigNumberish;
-  };
-
-  export type PoolBalanceOpStructOutput = [
-    number,
-    string,
-    string,
-    BigNumber
-  ] & { kind: number; poolId: string; token: string; amount: BigNumber };
-
   export type UserBalanceOpStruct = {
     kind: BigNumberish;
     asset: string;
@@ -172,20 +158,17 @@ export interface FlashLoansInterface extends utils.Interface {
     "getDomainSeparator()": FunctionFragment;
     "getInternalBalance(address,address[])": FunctionFragment;
     "getNextNonce(address)": FunctionFragment;
-    "getPausedState()": FunctionFragment;
     "getPool(bytes32)": FunctionFragment;
     "getPoolTokenInfo(bytes32,address)": FunctionFragment;
     "getPoolTokens(bytes32)": FunctionFragment;
     "getProtocolFeesCollector()": FunctionFragment;
     "hasApprovedRelayer(address,address)": FunctionFragment;
     "joinPool(bytes32,address,address,(address[],uint256[],bytes,bool))": FunctionFragment;
-    "managePoolBalance((uint8,bytes32,address,uint256)[])": FunctionFragment;
     "manageUserBalance((uint8,address,uint256,address,address)[])": FunctionFragment;
     "queryBatchSwap(uint8,(bytes32,uint256,uint256,uint256,bytes)[],address[],(address,bool,address,bool))": FunctionFragment;
     "registerPool(uint8)": FunctionFragment;
     "registerTokens(bytes32,address[],address[])": FunctionFragment;
     "setAuthorizer(address)": FunctionFragment;
-    "setPaused(bool)": FunctionFragment;
     "setRelayerApproval(address,address,bool)": FunctionFragment;
     "swap((bytes32,uint8,address,address,uint256,bytes),(address,bool,address,bool),uint256,uint256)": FunctionFragment;
   };
@@ -230,10 +213,6 @@ export interface FlashLoansInterface extends utils.Interface {
     functionFragment: "getNextNonce",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "getPausedState",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "getPool", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "getPoolTokenInfo",
@@ -254,10 +233,6 @@ export interface FlashLoansInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "joinPool",
     values: [BytesLike, string, string, IVault.JoinPoolRequestStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "managePoolBalance",
-    values: [IVault.PoolBalanceOpStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "manageUserBalance",
@@ -284,7 +259,6 @@ export interface FlashLoansInterface extends utils.Interface {
     functionFragment: "setAuthorizer",
     values: [string]
   ): string;
-  encodeFunctionData(functionFragment: "setPaused", values: [boolean]): string;
   encodeFunctionData(
     functionFragment: "setRelayerApproval",
     values: [string, string, boolean]
@@ -323,10 +297,6 @@ export interface FlashLoansInterface extends utils.Interface {
     functionFragment: "getNextNonce",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPausedState",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "getPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPoolTokenInfo",
@@ -345,10 +315,6 @@ export interface FlashLoansInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "joinPool", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "managePoolBalance",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "manageUserBalance",
     data: BytesLike
@@ -369,7 +335,6 @@ export interface FlashLoansInterface extends utils.Interface {
     functionFragment: "setAuthorizer",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setPaused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setRelayerApproval",
     data: BytesLike
@@ -381,7 +346,6 @@ export interface FlashLoansInterface extends utils.Interface {
     "ExternalBalanceTransfer(address,address,address,uint256)": EventFragment;
     "FlashLoan(address,address,uint256,uint256)": EventFragment;
     "InternalBalanceChanged(address,address,int256)": EventFragment;
-    "PausedStateChanged(bool)": EventFragment;
     "PoolBalanceChanged(bytes32,address,address[],int256[],uint256[])": EventFragment;
     "PoolBalanceManaged(bytes32,address,address,int256,int256)": EventFragment;
     "PoolRegistered(bytes32,address,uint8)": EventFragment;
@@ -395,7 +359,6 @@ export interface FlashLoansInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ExternalBalanceTransfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FlashLoan"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "InternalBalanceChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PausedStateChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolBalanceChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolBalanceManaged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolRegistered"): EventFragment;
@@ -435,14 +398,6 @@ export type InternalBalanceChangedEvent = TypedEvent<
 
 export type InternalBalanceChangedEventFilter =
   TypedEventFilter<InternalBalanceChangedEvent>;
-
-export type PausedStateChangedEvent = TypedEvent<
-  [boolean],
-  { paused: boolean }
->;
-
-export type PausedStateChangedEventFilter =
-  TypedEventFilter<PausedStateChangedEvent>;
 
 export type PoolBalanceChangedEvent = TypedEvent<
   [string, string, string[], BigNumber[], BigNumber[]],
@@ -590,16 +545,6 @@ export interface FlashLoans extends BaseContract {
 
     getNextNonce(user: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPausedState(
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber] & {
-        paused: boolean;
-        pauseWindowEndTime: BigNumber;
-        bufferPeriodEndTime: BigNumber;
-      }
-    >;
-
     getPool(
       poolId: BytesLike,
       overrides?: CallOverrides
@@ -645,11 +590,6 @@ export interface FlashLoans extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    managePoolBalance(
-      ops: IVault.PoolBalanceOpStruct[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     manageUserBalance(
       ops: IVault.UserBalanceOpStruct[],
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -677,11 +617,6 @@ export interface FlashLoans extends BaseContract {
 
     setAuthorizer(
       newAuthorizer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setPaused(
-      paused: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -747,16 +682,6 @@ export interface FlashLoans extends BaseContract {
 
   getNextNonce(user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPausedState(
-    overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber] & {
-      paused: boolean;
-      pauseWindowEndTime: BigNumber;
-      bufferPeriodEndTime: BigNumber;
-    }
-  >;
-
   getPool(
     poolId: BytesLike,
     overrides?: CallOverrides
@@ -802,11 +727,6 @@ export interface FlashLoans extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  managePoolBalance(
-    ops: IVault.PoolBalanceOpStruct[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   manageUserBalance(
     ops: IVault.UserBalanceOpStruct[],
     overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -834,11 +754,6 @@ export interface FlashLoans extends BaseContract {
 
   setAuthorizer(
     newAuthorizer: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setPaused(
-    paused: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -904,16 +819,6 @@ export interface FlashLoans extends BaseContract {
 
     getNextNonce(user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPausedState(
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber] & {
-        paused: boolean;
-        pauseWindowEndTime: BigNumber;
-        bufferPeriodEndTime: BigNumber;
-      }
-    >;
-
     getPool(
       poolId: BytesLike,
       overrides?: CallOverrides
@@ -959,11 +864,6 @@ export interface FlashLoans extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    managePoolBalance(
-      ops: IVault.PoolBalanceOpStruct[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     manageUserBalance(
       ops: IVault.UserBalanceOpStruct[],
       overrides?: CallOverrides
@@ -993,8 +893,6 @@ export interface FlashLoans extends BaseContract {
       newAuthorizer: string,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    setPaused(paused: boolean, overrides?: CallOverrides): Promise<void>;
 
     setRelayerApproval(
       sender: string,
@@ -1056,9 +954,6 @@ export interface FlashLoans extends BaseContract {
       token?: string | null,
       delta?: null
     ): InternalBalanceChangedEventFilter;
-
-    "PausedStateChanged(bool)"(paused?: null): PausedStateChangedEventFilter;
-    PausedStateChanged(paused?: null): PausedStateChangedEventFilter;
 
     "PoolBalanceChanged(bytes32,address,address[],int256[],uint256[])"(
       poolId?: BytesLike | null,
@@ -1195,8 +1090,6 @@ export interface FlashLoans extends BaseContract {
 
     getNextNonce(user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPausedState(overrides?: CallOverrides): Promise<BigNumber>;
-
     getPool(poolId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>;
 
     getPoolTokenInfo(
@@ -1226,11 +1119,6 @@ export interface FlashLoans extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    managePoolBalance(
-      ops: IVault.PoolBalanceOpStruct[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     manageUserBalance(
       ops: IVault.UserBalanceOpStruct[],
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -1258,11 +1146,6 @@ export interface FlashLoans extends BaseContract {
 
     setAuthorizer(
       newAuthorizer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setPaused(
-      paused: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1334,8 +1217,6 @@ export interface FlashLoans extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getPausedState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     getPool(
       poolId: BytesLike,
       overrides?: CallOverrides
@@ -1370,11 +1251,6 @@ export interface FlashLoans extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    managePoolBalance(
-      ops: IVault.PoolBalanceOpStruct[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     manageUserBalance(
       ops: IVault.UserBalanceOpStruct[],
       overrides?: PayableOverrides & { from?: string | Promise<string> }
@@ -1402,11 +1278,6 @@ export interface FlashLoans extends BaseContract {
 
     setAuthorizer(
       newAuthorizer: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setPaused(
-      paused: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
